@@ -2,17 +2,27 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 const CharacterCounterInput = ({ text, defaults }) => {
+	const [data, setData] = useState("");
 	const maxLength = 280;
 
+
+	function addText(badgeText) {
+		setData(prev => prev += badgeText + " ")
+	}
+
 	return (
-		<div className="counterInput">
+		<div className={`counterInput ${data.length > maxLength && "tooLong"}`}>
 			<div>
 				{defaults.map(b => {
-					return <button key={b}>{b}</button>;
+					return <button onClick={() => addText(b)} key={b}>{b}</button>;
 				})}
 			</div>
-			<textarea placeholder={text} />
-			<div>0/{maxLength}</div>
+			<textarea 
+				placeholder={text} 
+				value={data}
+				onChange={(e) => setData(e.currentTarget.value)}
+			/>
+			<div>{data.length}/{maxLength}</div>
 		</div>
 	);
 };
